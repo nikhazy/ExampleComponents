@@ -1,0 +1,28 @@
+﻿
+<InputFile OnChange="@SingleUpload" accept="@(FileType)" id="upload" multiple hidden />
+<label for="upload" class="@(ClassString) upload-label">
+    @(ChildContent)
+    @(Text)
+</label>
+
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+    [Parameter]
+    public string FileType { get; set; }
+
+    [Parameter]
+    public EventCallback<InputFileChangeEventArgs> OnUploadFinished { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string ClassString { get; set; }
+
+    private async Task SingleUpload(InputFileChangeEventArgs e)
+    {
+        OnUploadFinished.InvokeAsync(e);
+    }
+}

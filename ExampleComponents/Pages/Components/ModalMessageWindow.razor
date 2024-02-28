@@ -1,0 +1,69 @@
+﻿
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header spa-modal-header">
+                <h6 class="modal-title">@Title</h6>
+            </div>
+            <div class="modal-body">
+                <p>@Body</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn spa-btn-secondary" data-dismiss="modal" @onclick="() => Close()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Body { get; set; }
+    private ModalWindowType _type;
+    [Parameter]
+    public ModalWindowType Type
+    {
+        get
+        {
+            return _type;
+        }
+        set
+        {
+            _type = value;
+        }
+    }
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+}

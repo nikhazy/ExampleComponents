@@ -1,0 +1,40 @@
+﻿<div class="dropdown-back">
+    <p class="dropdown-title">@(Title)</p>
+    <select class="form-control" @onchange="OnSelectedChanged">
+        @foreach (var option in Options)
+        {
+            <option selected="@(option == Selected)" value="@(option)">@(option)</option>
+        }
+    </select>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<string> Options { get; set; }
+    [Parameter]
+    public string Selected { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public EventCallback<string> SelectedChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(Options != null && Options.Count > 0)
+        {
+            if (String.IsNullOrEmpty(Selected))
+            {
+                Selected = Options.First();
+                await SelectedChanged.InvokeAsync(Selected);
+            }
+        }
+    }
+
+    private async void OnSelectedChanged(ChangeEventArgs e)
+    {
+        Selected = e.Value.ToString();
+        await SelectedChanged.InvokeAsync(Selected);
+    }
+
+}

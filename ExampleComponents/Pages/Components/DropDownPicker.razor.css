@@ -1,0 +1,17 @@
+﻿body {
+}
+
+.dropdown-title {
+    background-color: var(--main-color);
+    color: var(--second-color);
+    text-align: center;
+    font-size: 0.9rem;
+    margin: 0px;
+    padding: 0px;
+}
+
+.dropdown-back {
+    display: flex;
+    flex-direction: column;
+}
+

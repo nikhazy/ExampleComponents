@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.upload-label {
+    display: inline-block;
+    background-color: var(--main-dark-color);
+    color: white;
+    font-family: sans-serif;
+    cursor: pointer;
+    text-align: center;
+}

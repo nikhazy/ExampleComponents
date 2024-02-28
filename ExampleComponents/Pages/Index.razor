@@ -1,0 +1,97 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Example code which shows couple of componets!</h1>
+
+<div class="d-flex flex-column">
+
+
+    <div class="card-container">
+
+        <h2>This is a drop down picker, it can be useful when you want to select one element from a list</h2>
+        <h3>Currently selected name @(selectedName)</h3>
+        <DropDownPicker Options="@(availableNames)"
+        @bind-Selected="@(selectedName)"
+                        Title="@("Please select a name")"></DropDownPicker>
+    </div>
+
+
+
+    <div class="card-container">
+        <h2>Date Time picker</h2>
+        <h3>Currently selected date time @(selectedDateTime.ToString("yyyy.MM.dd. HH:mm:ss"))</h3>
+        <DateTimePicker Name="@("Select The Deadline of the project")" @bind-Value="@(selectedDateTime)"></DateTimePicker>
+    </div>
+
+
+
+    <div class="card-container">
+
+        <h2>List of available names</h2>
+        <div class="name-container">
+            @foreach (var name in availableNames)
+            {
+                <div class="d-flex justify-content-between">
+                    <h4>@(name)</h4>
+                    <button @onclick="@(()=>TryToRemoveName(name))" class="btn btn-danger">X</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<ModalMessageWindow @ref="modalMessageWindow"></ModalMessageWindow>
+<ModalQuestionWindow @ref="modalQuestionWindow" OnAccepted="@(Remove)"></ModalQuestionWindow>
+
+@code {
+    List<string> availableNames;
+    string selectedName;
+
+    string nameToRemove;
+
+    DateTime selectedDateTime;
+
+
+    private ModalMessageWindow modalMessageWindow { get; set; }
+
+    private ModalQuestionWindow modalQuestionWindow { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        availableNames = new List<string>();
+        availableNames.Add("Peti");
+        availableNames.Add("Zoli");
+        availableNames.Add("Robi");
+        availableNames.Add("Ricsi");
+        availableNames.Add("Anikó");
+        availableNames.Add("Sára");
+        availableNames.Add("Rozi");
+        selectedName = "";
+
+
+    }
+
+
+    private void Remove()
+    {
+        availableNames.Remove(nameToRemove);
+
+        modalMessageWindow.Title = $"Remove a name";
+        modalMessageWindow.Body = "You removed a name from the list successfully";
+        modalMessageWindow.Type = ModalWindowType.Success;
+        modalMessageWindow.Open();
+
+        nameToRemove = string.Empty;
+    }
+
+    private void TryToRemoveName(string name)
+    {
+        nameToRemove = name;
+
+        modalQuestionWindow.Title = $"Remove a name";
+        modalQuestionWindow.Body = "Are you sure you would like to remove this name from the list?";
+        modalQuestionWindow.AcceptMessage = "Yes";
+        modalQuestionWindow.Open();
+    }
+}
