@@ -2,8 +2,9 @@
 <div class="modal @(ModalClass)" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header spa-modal-header">
-                <h6 class="modal-title @(ModalTypeToClass())">@Title</h6>
+            <div class="d-flex justify-content-center align-items-center @(ModalTypeToClass())">
+                <span class="oi oi-@(IconFromModalType())" style="margin-right:5px" aria-hidden="true"></span>
+                <h6 class="modal-title">@Title</h6>
             </div>
             <div class="modal-body">
                 <p>@Body</p>
@@ -46,11 +47,6 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    protected override void OnInitialized()
-    {
-
-    }
-
     public void Open()
     {
         ModalDisplay = "block;";
@@ -69,6 +65,7 @@
 
     private string ModalTypeToClass()
     {
+        //I added these classes to the CSS file, you can modify it further
         switch (Type)
         {
             case ModalWindowType.Success:
@@ -79,6 +76,23 @@
                 return "msg-error";
             default:
                 return "msg-info";
+        }
+    }
+
+    private string IconFromModalType()
+    {
+        //These icons come from Open Iconic, which is part of bootstrap framework which is added automatically with Blazor
+        //You can find possibilites here: https://icon-sets.iconify.design/oi/
+        switch (Type)
+        {
+            case ModalWindowType.Success:
+                return "circle-check";
+            case ModalWindowType.Warning:
+                return "warning";
+            case ModalWindowType.Error:
+                return "circle-x";
+            default:
+                return "info";
         }
     }
 }
