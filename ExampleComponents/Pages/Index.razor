@@ -12,8 +12,15 @@
         <h2>This is a drop down picker, it can be useful when you want to select one element from a list</h2>
         <h3>Currently selected name @(selectedName)</h3>
         <DropDownPicker Options="@(availableNames)"
-        @bind-Selected="@(selectedName)"
+                        Selected="@(selectedName)"
+                        SelectedChanged="@(x=>OnSelectedNameChanged(x))"
                         Title="@("Please select a name")"></DropDownPicker>
+
+        @if(string.IsNullOrEmpty(selectedName) == false)
+        {
+            <input type="text" @bind-value="@(newNameToSet)" class="form-control" />
+            <button class="btn btn-primary" @onclick="@(ModifySelectedName)">Modify the selected name</button>
+        }
     </div>
 
 
@@ -47,6 +54,7 @@
 @code {
     List<string> availableNames;
     string selectedName;
+    string newNameToSet;
 
     string nameToRemove;
 
@@ -76,6 +84,19 @@
     private void Remove()
     {
         availableNames.Remove(nameToRemove);
+        if(nameToRemove == selectedName)
+        {
+            if(availableNames.Count > 0)
+            {
+                selectedName = availableNames.First();
+                newNameToSet = availableNames.First();
+            }
+            else
+            {
+                selectedName = string.Empty;
+                newNameToSet = string.Empty;
+            }
+        }
 
         modalMessageWindow.Title = $"Remove a name";
         modalMessageWindow.Body = "You removed a name from the list successfully";
@@ -93,5 +114,18 @@
         modalQuestionWindow.Body = "Are you sure you would like to remove this name from the list?";
         modalQuestionWindow.AcceptMessage = "Yes";
         modalQuestionWindow.Open();
+    }
+
+    private void ModifySelectedName()
+    {
+        int indexOfName = availableNames.IndexOf(selectedName);
+        availableNames[indexOfName] = newNameToSet;
+        selectedName = newNameToSet;
+    }
+
+    private void OnSelectedNameChanged(string currentlySelectedName)
+    {
+        selectedName = currentlySelectedName;
+        newNameToSet = currentlySelectedName;
     }
 }
