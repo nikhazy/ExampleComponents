@@ -188,6 +188,26 @@
                 }
                 allAvailableNamesFromFile.AddRange(lines);
             }
+
+
+            //This Part of the upload saves the file into a directory selected, remove the IF statement if you want to save it to a file
+            if (false)
+            {
+                string directory = "C:\\names";
+                if (Directory.Exists(directory) == false)
+                {
+                    Directory.CreateDirectory(directory);
+                }
+                string fileSavePath = Path.Combine(directory, file.Name);
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    await file.OpenReadStream().CopyToAsync(ms);
+                    var bytes = ms.ToArray();
+
+                    File.WriteAllBytes(fileSavePath, bytes);
+                }
+            }
         }
 
         availableNames = allAvailableNamesFromFile;
