@@ -51,6 +51,19 @@
             <button class="btn btn-primary" style="white-space:nowrap" @onclick="@(()=>AddNewNameToTheList(nameToAdd))">Add new name</button>
         </div>
     </div>
+
+
+
+    <div class="card-container">
+        <h2>Upload a .txt file with a list of names</h2>
+        <h5>The txt file should consist of lines, each line should be a name</h5>
+        <UploadButton ClassString="@("btn btn-primary")"
+                      FileType="@(".txt")"
+                      Text="Upload Settings"
+                      OnUploadFinished="@(UploadSettings)">
+            <span class="oi oi-data-transfer-upload navbar-icon" aria-hidden="true"></span>
+        </UploadButton>
+    </div>
 </div>
 
 <ModalMessageWindow @ref="modalMessageWindow"></ModalMessageWindow>
@@ -152,5 +165,31 @@
             modalMessageWindow.Open();
             availableNames.Add(newNameToAdd);
         }
+    }
+
+
+    private async Task UploadSettings(InputFileChangeEventArgs e)
+    {
+        List<string> allAvailableNamesFromFile = new List<string>();
+
+        //You can set here how many files can be handled by this method
+        var files = e.GetMultipleFiles(1);
+
+        foreach (var file in files)
+        {
+            using (var stream = file.OpenReadStream())
+            using (var reader = new StreamReader(stream))
+            {
+                var lines = new List<string>();
+                string line;
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    lines.Add(line);
+                }
+                allAvailableNamesFromFile.AddRange(lines);
+            }
+        }
+
+        availableNames = allAvailableNamesFromFile;
     }
 }

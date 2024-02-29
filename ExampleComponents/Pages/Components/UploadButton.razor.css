@@ -4,7 +4,7 @@
 .upload-label {
     display: inline-block;
     background-color: var(--main-dark-color);
-    color: white;
+    color: black;
     font-family: sans-serif;
     cursor: pointer;
     text-align: center;
