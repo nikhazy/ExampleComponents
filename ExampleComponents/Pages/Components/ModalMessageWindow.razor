@@ -1,9 +1,9 @@
 ﻿
-<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+<div class="modal @(ModalClass)" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header spa-modal-header">
-                <h6 class="modal-title">@Title</h6>
+                <h6 class="modal-title @(ModalTypeToClass())">@Title</h6>
             </div>
             <div class="modal-body">
                 <p>@Body</p>
@@ -48,7 +48,7 @@
 
     protected override void OnInitialized()
     {
-        
+
     }
 
     public void Open()
@@ -65,5 +65,20 @@
         ModalClass = "";
         ShowBackdrop = false;
         StateHasChanged();
+    }
+
+    private string ModalTypeToClass()
+    {
+        switch (Type)
+        {
+            case ModalWindowType.Success:
+                return "msg-success";
+            case ModalWindowType.Warning:
+                return "msg-warning";
+            case ModalWindowType.Error:
+                return "msg-error";
+            default:
+                return "msg-info";
+        }
     }
 }

@@ -1,2 +1,18 @@
 ﻿body {
 }
+
+.msg-success {
+    color: chartreuse;
+}
+
+.msg-warning {
+    color: darkorange;
+}
+
+.msg-error {
+    color: crimson;
+}
+
+.msg-info {
+    color: rgb(0, 38, 255);
+}
